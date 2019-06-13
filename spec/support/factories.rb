@@ -1,6 +1,6 @@
-require 'factory_girl'
+require 'factory_bot'
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :category, class: Category do
     sequence(:title) { |n| "Title for Category #{n}" }
   end
@@ -12,8 +12,8 @@ FactoryGirl.define do
     sequence(:id) { |n| n }
     sequence(:title) { |n| "Title for Post #{n}" }
     sequence(:body) { |n| "Body for Post #{n}" }
-    content_type :article
-    hidden_field 'It\'s a hidden field!'
+    content_type { :article }
+    hidden_field { 'It\'s a hidden field!' }
   end
 
   factory :user, class: User do
@@ -24,7 +24,7 @@ FactoryGirl.define do
     after(:create) { |user| create(:profile, user: user) }
 
     trait :with_posts do
-      transient { post_count 3 }
+      transient { post_count { 3 } }
       after(:create) do |user, e|
         create_list(:post, e.post_count, author: user)
       end
